@@ -12,7 +12,7 @@ export default function Hero() {
                 alt='picture of the author' 
                 width={250} 
                 height={250} 
-                priority
+                priority // 화면에 가장 먼저 표시
             />
             <h2 className='text-3xl font-bold mt-2'>{"Hi, I'm J"}</h2>
             <h3 className='text-xl font-semibold'>Front-end Engineer</h3>
