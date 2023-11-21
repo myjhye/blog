@@ -12,6 +12,16 @@ export type Post = {
 }
 
 
+// featured가 true인 블로그 포스트 가져오는 -> 비동기 함수
+export async function getFeaturedPosts(): Promise<Post[]> {
+
+    return getAllPosts()
+        .then((posts) => posts.filter((post) => post.featured));
+}
+
+
+
+
 // 모든 블로그 포스트 가져오는 -> 비동기 함수
 // Promise<Post[]> -> 비동기 작업이 완료 되면 -> Post 객체의 배열 반환 
 export async function getAllPosts(): Promise<Post[]> {
