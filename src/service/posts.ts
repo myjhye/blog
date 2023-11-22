@@ -20,6 +20,13 @@ export async function getFeaturedPosts(): Promise<Post[]> {
 }
 
 
+// featured가 true가 아닌 블로그 포스트 가져오는 -> 비동기 함수
+export async function getNonFeaturedPosts(): Promise<Post[]> {
+
+    return getAllPosts()
+        .then((posts) => posts.filter((post) => !post.featured));
+}
+
 
 
 // 모든 블로그 포스트 가져오는 -> 비동기 함수
