@@ -1,5 +1,5 @@
 'use client';
-
+ 
 import { Post } from "@/service/posts"
 import { useState } from "react";
 import PostsGrid from "./PostsGrid";
@@ -29,7 +29,7 @@ export default function FilterablePosts({posts, categories}: Props) {
                         : posts.filter((post) => post.category === selected);
 
     return (
-        <section>
+        <section className="flex m-5">
             <PostsGrid posts={filtered} />
             <Categories 
                 categories={[ALL_POSTS, ...categories]}

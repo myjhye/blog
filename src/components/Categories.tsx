@@ -7,11 +7,14 @@ type Props = {
 export default function Categories({categories, selected, onClick}: Props) {
 
     return (
-        <section>
-            <h2>Category</h2>
+        <section className="text-center p-4">
+            <h2 className="text-lg font-bold border-b border-black-500 mb-2">Category</h2>
             <ul>
                 {categories.map((category) => (
                     <li 
+                        className={`cursor-pointer hover:text-sky-800 ${
+                            category === selected && 'text-sky-800'
+                        }`}
                         key={category}
                         onClick={() => onClick(category)}
                     >
