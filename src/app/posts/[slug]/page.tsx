@@ -17,6 +17,7 @@ export default async function PostPage({params: {slug}}: Props) {
 
     return (
         <article className="rounded-2xl overflow-hidden bg-gray-100 shadow-lg m-4">
+            {/* 상단 헤더 이미지 */}
             <Image 
                 className="w-full h-1/5 max-h-[500px]"
                 src={`/images/posts/${post.path}.png`} 
@@ -24,7 +25,11 @@ export default async function PostPage({params: {slug}}: Props) {
                 width={760} 
                 height={420} 
             />
+
+            {/* 포스트 내용 */}
             <PostContent post={post} />
+
+            {/* 이전, 다음 포스트 */}
             <section className="flex shadow-md">
                 {post.prev && <AdjacentPostCard post={post.prev} type='prev' />}
                 {post.next && <AdjacentPostCard post={post.next} type='next' />}
