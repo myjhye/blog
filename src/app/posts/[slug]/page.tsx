@@ -24,6 +24,10 @@ export default async function PostPage({params: {slug}}: Props) {
                 height={420} 
             />
             <PostContent post={post} />
+            <section>
+                {post.prev && <p>{post.prev.title}</p>}
+                {post.next && <p>{post.next.title}</p>}
+            </section>
         </article>
     )
 }

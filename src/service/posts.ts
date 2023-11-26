@@ -13,7 +13,9 @@ export type Post = {
 
 // PostData -> Post 타입에 content를 추가
 export type PostData = Post & { 
-    content: string 
+    content: string;
+    prev: Post | null;
+    next: Post | null;
 };
 
 
@@ -59,19 +61,35 @@ export async function getPostData(fileName: string): Promise<PostData> {
     // 포스트 파일의 경로 지정
     const filePath = path.join(process.cwd(), 'data', 'posts', `${fileName}.md`);
     
-    // 모든 포스트를 가져온 후 -> 해당 파일 이름과 일치하는 포스트의 메타데이터 가져오기
-    const metadata = await getAllPosts()
-        .then((posts) => posts.find((post) => post.path === fileName));
-        
-        if(!metadata) {
-            throw new Error(`${fileName}에 해당하는 포스트를 찾을 수 없음`);
-        }
+    // 모든 포스트 데이터 가져오기
+    const posts = await getAllPosts()
     
-    // 포스트 파일의 내용을 비동기적으로 읽어와서 -> 메타데이터와 함께 반환    
+    // 저장된 파일 이름과 일치하는 포스트 찾기
+    const post = posts.find((post) => post.path === fileName);    
+    
+    if (!post) {
+        throw new Error(`${fileName}에 해당하는 포스트를 찾을 수 없음`);
+    }
+    
+    // 현재 포스트의 인덱스 찾기
+    const index = posts.indexOf(post);
+    
+    // 현재 포스트의 -> 이전 포스트와 다음 포스트를 결정
+    const next = index > 0 
+                    ? posts[index - 1]
+                    : null;
+    const prev = index < posts.length 
+                    ? posts[index + 1]
+                    : null; 
+ 
+    // 포스트 파일의 내용을 읽어오기
     const content = await readFile(filePath, 'utf-8');
     
+    // 포스트 데이터와 파일 내용을 합쳐서 반환
     return { 
-        ...metadata, 
-        content 
+        ...post, 
+        content,
+        next,
+        prev 
     };
 }
