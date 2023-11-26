@@ -2,6 +2,7 @@
 
 import { ChangeEvent, FormEvent, useState } from "react"
 import Banner, { BannerData } from "./Banner";
+import { sendContactEmail } from "@/service/contact";
 
 // Form 타입 정의
 type Form = {
@@ -28,7 +29,7 @@ export default function ContactForm() {
         const { name, value } = e.target;
 
         // 상태 업데이트 -> 현재 폼 상태를 -> 이전 상태를 기반으로 업데이트
-        setForm(prev => ({
+        setForm((prev) => ({
             // 이전 상태 복사
             ...prev,
             // 변경된 name 값을 -> 새 value로 설정
@@ -40,18 +41,34 @@ export default function ContactForm() {
     const onSubmit = (e: FormEvent<HTMLFormElement>) => {
 
         e.preventDefault();
-        console.log(form);
         
-        // 성공 배너 메세지 표시
-        setBanner({ 
-            message: '성공', 
-            state: 'success' 
-        });
-
-        // 3초 후 배너 숨김
-        setTimeout(() => {
-            setBanner(null);
-        }, 3000);
+        sendContactEmail(form)
+            .then(() => {
+                // 성공 배너 메세지 표시
+                setBanner({ 
+                    message: '메일 전송 성공', 
+                    state: 'success' 
+                });
+                // 전송 후 입력 칸 비우기
+                setForm({
+                    from: '',
+                    subject: '',
+                    message: ''
+                });
+            })
+            .catch(() => {
+                // 에러 배너 메세지 표시
+                setBanner({ 
+                    message: '메일 전송 실패', 
+                    state: 'error' 
+                });
+            })
+            .finally(() => {
+                // 3초 후 배너 숨김
+                setTimeout(() => {
+                    setBanner(null);
+                }, 3000);
+            })
     }
 
     return (
