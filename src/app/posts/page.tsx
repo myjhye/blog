@@ -1,6 +1,12 @@
 import FilterablePosts from "@/components/FilterablePosts";
 import PostsGrid from "@/components/PostsGrid";
 import { getAllPosts, getFeaturedPosts } from "@/service/posts"
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: 'All Posts',
+    description: '풀스택 관련 블로그 글',
+};
 
 export default async function PostsPage() {
 
