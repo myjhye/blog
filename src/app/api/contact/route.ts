@@ -1,3 +1,4 @@
+import { sendEmail } from '@/service/email';
 import * as yup from 'yup';
 
 const bodySchema = yup.object().shape({
@@ -7,11 +8,25 @@ const bodySchema = yup.object().shape({
 })
 
 export async function POST(request: Request) {
-    
-    if (!bodySchema.isValidSync(request.body)) {
 
-        return new Response('유효하지 않은 포맷', { status: 400 });
+    const body = await request.json();
+    
+    if (!bodySchema.isValidSync(body)) {
+
+        return new Response(JSON.stringify({ message: '메일 전송 실패'}), { 
+            status: 400, 
+        });
     }
 
-    const { from, subject, message } = request.body;
+    return sendEmail(body)
+        .then(() => new Response(JSON.stringify({ message: '메일 전송 성공'}), { 
+            status: 200, 
+        }))
+        .catch(error => {
+            console.error(error);
+
+            return new Response(JSON.stringify({ message: '메일 전송 실패' }), {
+                status: 500, // 서버 내부 에러
+            })
+        })
 }
